@@ -1,0 +1,10 @@
+{
+  "name": "asmodeus",
+  "version": "0.0.1-BETA",
+  "description": "A worthy discord bot using TypeScript and some magical stuff called Klasa",
+  "main": "index.js",
+  "repository": "https://github.com/Kizuru/Asmodeus",
+  "author": "Kizuru",
+  "license": "MIT",
+  "private": true
+}
