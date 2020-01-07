@@ -1,5 +1,5 @@
 import { BaseCluster } from 'kurasuta';
-import { ShardingManager } from '@lib/shard/manager';
+import { ShardingManager } from '@shard/manager';
 
 export default class extends BaseCluster {
 

@@ -1,7 +1,10 @@
 import 'module-alias/register';
 
+import '@lib/setup/permissionLevels';
+import '@lib/setup/gateways';
+
 import { join } from 'path';
-import { ShardingManager } from '@lib/shard/manager';
+import { ShardingManager } from '@shard/manager';
 import { SharderEvents } from 'kurasuta';
 import { Colors } from 'klasa';
 

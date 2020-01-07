@@ -1,7 +1,7 @@
 import { ShardingManager as KurasutaShardingManager, SharderOptions } from 'kurasuta';
 import { KlasaConsole, ConsoleOptions } from 'klasa';
-import AsmodeusConfig from '@lib/typings/config';
 
+import { AsmodeusConfig } from '@lib/typings';
 import * as PROD_OPTS from '@root/config';
 import * as DEV_OPTS from '@root/config.dev';
 

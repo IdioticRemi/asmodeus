@@ -31,6 +31,8 @@
   },
   "_moduleAliases": {
     "@utils": "dist/src/lib/util",
+    "@shard": "dist/src/lib/shard",
+    "@enum": "dist/src/lib/enum",
     "@lib": "dist/src/lib",
     "@root": "dist"
   }

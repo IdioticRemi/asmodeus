@@ -8,6 +8,8 @@
     "baseUrl": ".",
     "paths": {
       "@utils/*": ["src/lib/util/*"],
+      "@shard/*": ["src/lib/shard/*"],
+      "@enum/*": ["src/lib/enum/*"],
       "@lib/*": ["src/lib/*"],
       "@root/*": ["*"]
     }

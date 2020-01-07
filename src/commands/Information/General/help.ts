@@ -1,6 +1,6 @@
 import { Command, RichDisplay, util, CommandStore, KlasaMessage } from 'klasa';
 import { MessageEmbed } from 'discord.js';
-import { AsmodeusClient } from '@lib/shard/client';
+import { AsmodeusClient } from '@shard/client';
 
 module.exports = class extends Command {
 

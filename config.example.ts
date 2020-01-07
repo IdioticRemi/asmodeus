@@ -1,12 +1,12 @@
-import { CustomSharderOptions } from '@lib/shard/manager';
-import { KlasaClientOptions, Client } from 'klasa';
+import { CustomSharderOptions } from '@shard/manager';
+import { CustomClientOptions, AsmodeusClient } from '@shard/client';
 
 export const KEYS = {
 	DISCORD: '',
 	YOUTUBE: ''
 };
 
-export const CLIENT_OPTIONS: KlasaClientOptions = {
+export const CLIENT_OPTIONS: CustomClientOptions = {
 	prefix: ['as!'],
 	language: 'en',
 	messageSweepInterval: 150,
@@ -17,7 +17,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 export const SHARDING_MANAGER_OPTIONS: CustomSharderOptions = {
 	consoleOptions: { colors: { log: { time: { background: 'lightblue' } } } },
 	clientOptions: CLIENT_OPTIONS,
-	client: Client,
+	client: AsmodeusClient,
 
 	clusterCount: 2,
 	shardCount: 4

@@ -6,11 +6,11 @@ export class AsmodeusClient extends KlasaClient {
 	public constructor(options: CustomClientOptions) {
 		super(options);
 
-		this.accent = options.accent;
+		this.accent = options.accent as any;
 	}
 
 }
 
 export interface CustomClientOptions extends KlasaClientOptions {
-	accent: string;
+	accent?: string | number;
 }
