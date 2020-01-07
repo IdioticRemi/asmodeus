@@ -8,6 +8,7 @@ export const KEYS = {
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
 	prefix: ['as!'],
+	language: 'en',
 	messageSweepInterval: 150,
 	messageCacheLifetime: 900,
 	messageCacheMaxSize: 100
