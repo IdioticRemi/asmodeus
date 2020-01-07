@@ -1,0 +1,21 @@
+{
+  "extends": "eslint-config-bamboo",
+  "compilerOptions": {
+    "sourceMap": false,
+    "outDir": "./dist",
+    "target": "es2020",
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["src/lib/util/*"],
+      "@lib/*": ["src/lib/*"],
+      "@root/*": ["*"]
+    }
+  },
+  "include": [
+    "./src/**/*",
+    "./config.ts",
+    "./config.dev.ts",
+    "./config.example.ts"
+  ],
+  "exclude": ["**/node_modules", "**/dist", "**/.idea"]
+}

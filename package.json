@@ -2,17 +2,36 @@
   "name": "asmodeus",
   "version": "0.0.1-BETA",
   "description": "A worthy discord bot using TypeScript and some magical stuff called Klasa",
-  "main": "index.js",
+  "main": "dist/src/asmodeus",
+  "scripts": {
+    "start": "node dist/src/asmodeus",
+    "build": "tsc -p .",
+    "dev": "yarn build && yarn start"
+  },
   "repository": "https://github.com/Kizuru/Asmodeus",
   "author": "Kizuru",
   "license": "MIT",
   "private": true,
   "devDependencies": {
     "@types/node": "^13.1.4",
+    "@types/ws": "^6.0.4",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
     "@typescript-eslint/parser": "^2.15.0",
     "eslint": "^6.8.0",
     "eslint-config-bamboo": "^3.0.0",
+    "opusscript": "^0.0.7",
     "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "discord.js": "discordjs/discord.js#master",
+    "klasa": "dirigeants/klasa#settings",
+    "kurasuta": "^1.1.6",
+    "module-alias": "^2.2.2",
+    "simple-youtube-api": "^5.2.1"
+  },
+  "_moduleAliases": {
+    "@utils": "dist/src/lib/util",
+    "@lib": "dist/src/lib",
+    "@root": "dist"
   }
 }
