@@ -15,7 +15,7 @@ manager.on(SharderEvents.SHARD_READY, shardID => {
 		new Colors({
 			text: 'black',
 			background: 'cyan'
-		}).format(`|SHARD ${shardID}|`),
+		}).format(`[SHARD ${shardID}]`),
 		`Shard ${shardID} is ready!`
 	].join(' '));
 });
@@ -25,7 +25,7 @@ manager.on(SharderEvents.SPAWN, cluster => {
 		new Colors({
 			text: 'black',
 			background: 'cyan'
-		}).format(`|CLUSTER ${cluster.id}|`),
+		}).format(`[CLUSTER ${cluster.id}]`),
 		`Spawned cluster ${cluster.id}!`
 	].join(' '));
 });
@@ -35,7 +35,7 @@ manager.on(SharderEvents.READY, cluster => {
 		new Colors({
 			text: 'black',
 			background: 'cyan'
-		}).format(`|CLUSTER ${cluster.id}|`),
+		}).format(`[CLUSTER ${cluster.id}]`),
 		`Cluster ${cluster.id} is ready!`
 	].join(' '));
 });
