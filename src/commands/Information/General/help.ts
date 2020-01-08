@@ -1,30 +1,48 @@
 import { Command, RichDisplay, util, CommandStore, KlasaMessage } from 'klasa';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { AsmodeusClient } from '@shard/client';
+
+const PERMISSIONS_EMBED = new Permissions([Permissions.FLAGS.EMBED_LINKS]);
+const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
 
 module.exports = class extends Command {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['commands'],
+			runIn: ['text'],
 			guarded: true,
+			requiredPermissions: PERMISSIONS_EMBED,
 			description: language => language.get('COMMAND_HELP_DESCRIPTION'),
-			usage: '(Command:command)'
+			usage: '(Command:command|Page:integer|Category:category)'
 		});
 
 		this.createCustomResolver('command', (arg, possible, message) => {
 			if (!arg || arg === '') return undefined;
-			// @ts-ignore
-			return this.client.arguments.get('command').run(arg, possible, message);
+
+			return this.client.arguments.get('command')!.run(arg, possible, message);
+		});
+
+		this.createCustomResolver('category', async (arg, _, message) => {
+			if (!arg) return undefined;
+			arg = arg.toLowerCase();
+			let p = 0;
+
+			Object.keys(await this.buildHelp(message)).forEach((category, page) => {
+				// Add 1, since 1 will be subtracted later
+				if (category.toLowerCase() === arg) p = page + 1;
+			});
+
+			return p || undefined;
 		});
 	}
 
 	// @ts-ignore
-	public async run(message: KlasaMessage, [command]: [Command]) {
+	public async run(message: KlasaMessage, [commandOrPage]: [Command | number | undefined]) {
+		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
 		if (command) {
 			const cmd = new MessageEmbed()
-				// @ts-ignore
-				.setAuthor(`${message.language.get('COMMAND_HELP_CMD', command.name)}`, message.author.avatarURL())
+				.setAuthor(`${message.language.get('COMMAND_HELP_CMD', command.name)}`, message.author.avatarURL() as string | undefined)
 				.setColor((this.client as AsmodeusClient).accent)
 				.setDescription(util.isFunction(command.description) ? command.description(message.language) : command.description)
 				.addField(message.language.get('COMMAND_HELP_USAGE'), `\`\`\`${command.usage.fullUsage(message)}\`\`\``)
@@ -34,6 +52,13 @@ module.exports = class extends Command {
 
 			return message.sendMessage(cmd);
 		}
+
+		if (!(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
+			const missing = (message.channel as TextChannel).permissionsFor(this.client.user!)!.missing(PERMISSIONS_RICHDISPLAY, false);
+
+			return message.sendLocale('INHIBITOR_MISSING_BOT_PERMS', [missing.map(key => this.friendlyPerm(key)).join(', ')]);
+		}
+
 		const template = new MessageEmbed()
 			.setColor((this.client as AsmodeusClient).accent)
 			.setFooter(message.language.get('COMMAND_HELP_REQUESTED', message.author.tag))
@@ -65,7 +90,10 @@ module.exports = class extends Command {
 			});
 		});
 
-		await display.run(message, { filter: (reaction, user) => user.id === message.author.id });
+		const page = util.isNumber(commandOrPage) ? commandOrPage - 1 : null;
+		const startPage = page === null || page < 0 || page >= display.pages.length ? null : page;
+
+		await display.run(message, { filter: (reaction, user) => user.id === message.author.id, startPage: startPage === null ? undefined : startPage });
 	}
 
 	private async buildHelp(message: KlasaMessage) {
@@ -85,6 +113,11 @@ module.exports = class extends Command {
 				.catch(() => {})));
 
 		return help;
+	}
+
+	private friendlyPerm(FLAG: string) {
+		const obj = util.toTitleCase(FLAG.split('_').join(' '));
+		return obj;
 	}
 
 };

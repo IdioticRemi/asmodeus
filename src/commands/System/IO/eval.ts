@@ -1,10 +1,10 @@
-import { KlasaMessage, Command, util, Stopwatch, Type, CommandStore } from "klasa";
-import { inspect } from "util";
-import { Permission } from "@enum/Permission";
+import { KlasaMessage, Command, util, Stopwatch, Type, CommandStore } from 'klasa';
+import { inspect } from 'util';
+import { Permission } from '@enum/Permission';
 
 export default class extends Command {
 
-	constructor(store: CommandStore, file: string[], directory: string) {
+	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['ev'],
 			permissionLevel: Permission.OwnerHidden,
@@ -16,7 +16,7 @@ export default class extends Command {
 		});
 	}
 
-	async run(message: KlasaMessage, [code]: [string]) {
+	public async run(message: KlasaMessage, [code]: [string]) {
 		const { success, result, time, type } = await this.eval(message, code);
 		const footer = util.codeBlock('ts', type);
 		const output = message.language.get(success ? 'COMMAND_EVAL_OUTPUT' : 'COMMAND_EVAL_ERROR',
@@ -38,12 +38,15 @@ export default class extends Command {
 	}
 
 	// Eval the input
-	async eval(message: KlasaMessage, code: string) {
+	private async eval(message: KlasaMessage, code: string) {
 		// eslint-disable-next-line no-unused-vars
 		const { flagArgs: flags } = message;
 		code = code.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
 		const stopwatch = new Stopwatch();
-		let success, syncTime, asyncTime, result;
+		let success;
+		let syncTime;
+		let asyncTime;
+		let result;
 		let thenable = false;
 		let type;
 		try {
@@ -77,8 +80,8 @@ export default class extends Command {
 		return { success, type, time: this.formatTime(syncTime, asyncTime), result: util.clean(result) };
 	}
 
-	formatTime(syncTime: string, asyncTime: string | undefined) {
+	private formatTime(syncTime: string, asyncTime: string | undefined) {
 		return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
 	}
 
-};
+}

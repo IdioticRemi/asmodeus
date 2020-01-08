@@ -1,4 +1,43 @@
-import { LanguageStore, Language, util } from 'klasa';
+import { LanguageStore, Language, util, version } from 'klasa';
+import { MessageEmbed } from 'discord.js';
+import { AsmodeusClient } from '@shard/client';
+import friendlyDuration from '@utils/friendlyDuration';
+import { Style } from '@enum/style';
+
+const TIMES = {
+	YEAR: {
+		1: 'year',
+		DEFAULT: 'years'
+	},
+	MONTH: {
+		1: 'month',
+		DEFAULT: 'months'
+	},
+	WEEK: {
+		1: 'week',
+		DEFAULT: 'weeks'
+	},
+	DAY: {
+		1: 'day',
+		DEFAULT: 'days'
+	},
+	HOUR: {
+		1: 'hour',
+		DEFAULT: 'hours'
+	},
+	MINUTE: {
+		1: 'minute',
+		DEFAULT: 'minutes'
+	},
+	SECOND: {
+		1: 'second',
+		DEFAULT: 'seconds'
+	}
+};
+
+function duration(time: number, precision?: number) {
+	return friendlyDuration(time, TIMES, precision);
+}
 
 module.exports = class extends Language {
 
@@ -161,19 +200,26 @@ module.exports = class extends Language {
 
 			COMMAND_DISABLE_WARN: 'You probably don\'t want to disable that, since you wouldn\'t be able to run any command to enable it again',
 
-			COMMAND_STATS: (memUsage, uptime, users, guilds, channels, klasaVersion, discordVersion, processVersion, message) => [
-				'= STATISTICS =',
-				'',
-				`• Mem Usage  :: ${memUsage} MB`,
-				`• Uptime     :: ${uptime}`,
-				`• Users      :: ${users}`,
-				`• Guilds     :: ${guilds}`,
-				`• Channels   :: ${channels}`,
-				`• Klasa      :: v${klasaVersion}`,
-				`• Discord.js :: v${discordVersion}`,
-				`• Node.js    :: ${processVersion}`,
-				`• Shard      :: ${(message.guild ? message.guild.shardID as number : 0) + 1} / ${this.client.shard?.shardCount}`
-			],
+			// @ts-ignore
+			COMMAND_STATS: (stats, uptime, usage) => new MessageEmbed()
+				.setColor((this.client as AsmodeusClient).accent)
+				.addField('Statistics', [
+					`${Style.EmbedArrow} Users: **${stats.USERS}**`,
+					`Guilds: **${stats.GUILDS}**`,
+					`Channels: **${stats.CHANNELS}**`,
+					`Discord.js: **${stats.VERSION}**`,
+					`Node.js: **${stats.NODE_JS}**`,
+					`Klasa: **${version}**`
+				].join(`\n${Style.EmbedArrow} `))
+				.addField('Uptime', [
+					`${Style.EmbedArrow} Host: **${duration(uptime.HOST, 2)}**`,
+					`Total: **${duration(uptime.TOTAL, 2)}**`,
+					`Client: **${duration(uptime.CLIENT, 2)}**`
+				].join(`\n${Style.EmbedArrow} `))
+				.addField('Server Usage', [
+					`${Style.EmbedArrow} CPU Load: **${usage.CPU_LOAD.join('%** | **')}%**`,
+					`Heap: **${usage.RAM_USED}** (Total: **${usage.RAM_TOTAL}**)`
+				].join(`\n${Style.EmbedArrow} `)),
 			COMMAND_STATS_DESCRIPTION: 'Provides some details about the bot and stats.',
 
 			MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
