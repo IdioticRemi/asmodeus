@@ -3,6 +3,13 @@ import { MessageEmbed } from 'discord.js';
 import { AsmodeusClient } from '@shard/client';
 import friendlyDuration from '@utils/friendlyDuration';
 import { Style } from '@enum/style';
+import { ExtendedHelp } from '@utils/extendedHelp';
+
+const builder = new ExtendedHelp()
+	.setExtendedHelp(`\\📜 Extended Help`)
+	.setExplainedUsage(`\\⚙ Explained Usage`)
+	.setPossibleFormats(`\\🔢 Possible Formats`)
+	.setExamples(`\\🔗 Examples`);
 
 const TIMES = {
 	YEAR: {
@@ -123,15 +130,23 @@ module.exports = class extends Language {
 			COMMAND_EVAL_SENDFILE: (time, type) => `Output was too long... sent the result as a file.\n**Type**:${type}\n${time}`,
 			COMMAND_EVAL_SENDCONSOLE: (time, type) => `Output was too long... sent the result to console.\n**Type**:${type}\n${time}`,
 			COMMAND_EVAL_DESCRIPTION: 'Evaluates arbitrary Javascript. Reserved for bot owner.',
-			COMMAND_EVAL_EXTENDEDHELP: [
-				'The eval command evaluates code as-in, any error thrown from it will be handled.',
-				'It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.',
-				'The --silent flag will make it output nothing.',
-				"The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.",
-				'The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword.',
-				'The --showHidden flag will enable the showHidden option in util.inspect.',
-				'If the output is too large, it\'ll send the output as a file, or in the console if the bot does not have the ATTACH_FILES permission.'
-			].join('\n'),
+			// @ts-ignore
+			COMMAND_EVAL_EXTENDEDHELP: builder.display('eval', {
+				extendedHelp: [
+					'The eval command evaluates code as-in, any error thrown from it will be handled.',
+					'It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.',
+					'The --silent flag will make it output nothing.',
+					"The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.",
+					'The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword.',
+					'The --showHidden flag will enable the showHidden option in util.inspect.',
+					'If the output is too large, it\'ll send the output as a file, or in the console if the bot does not have the ATTACH_FILES permission.'
+				].join('\n'),
+				examples: [
+					'this --depth=1',
+					'message.reply("no u") --silent',
+					'await message.author.settings.update("key", <value>) --async'
+				]
+			}),
 
 			COMMAND_UNLOAD: (type, name) => `✅ Unloaded ${type}: ${name}`,
 			COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
@@ -226,13 +241,10 @@ module.exports = class extends Language {
 			TEXT_PROMPT_ABORT_OPTIONS: ['abort', 'stop', 'cancel'],
 
 			// eslint-disable-next-line no-dupe-keys
-			COMMAND_HELP_NO_EXTENDED: 'No extended help available.',
 			COMMAND_HELP_CMD: name => `Command: ${name}`,
 			COMMAND_HELP_CATEGORY: category => `${category} commands`,
 			COMMAND_HELP_REQUESTED: tag => `Requested by ${tag}`,
-			COMMAND_HELP_LOADING: `:gear: Generating Display...`,
-			COMMAND_HELP_USAGE: 'Usage',
-			COMMAND_HELP_EXTENDED: 'Extended Help',
+			COMMAND_HELP_USAGE: '\\❓ Usage',
 			COMMAND_HELP_INFO: 'Information Page',
 			COMMAND_HELP_INFOS: 'This is Kuromu\'s information page!\n\nNavigate using the reactions at the bottom!\n*Make sure I have the right permissions*',
 			COMMAND_HELP_DESCRIPTION: 'Display help for a command.'

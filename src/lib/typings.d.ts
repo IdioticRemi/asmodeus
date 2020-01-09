@@ -1,8 +1,8 @@
 import { CustomSharderOptions } from '@shard/manager';
-import { KlasaClientOptions } from 'klasa';
+import { CustomClientOptions } from '@shard/client';
 
 export interface AsmodeusConfig {
 	KEYS: any;
 	SHARDING_MANAGER_OPTIONS: CustomSharderOptions;
-	CLIENT_OPTIONS: KlasaClientOptions;
+	CLIENT_OPTIONS: CustomClientOptions;
 }

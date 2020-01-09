@@ -8,7 +8,7 @@ import { ShardingManager } from '@shard/manager';
 import { SharderEvents } from 'kurasuta';
 import { Colors } from 'klasa';
 
-const manager = new ShardingManager(join(__dirname, './lib/shard/cluster'), process.env.NODE_ENV === 'production' ? true : false);
+const manager = new ShardingManager(join(__dirname, './lib/shard/cluster'));
 
 manager.on(SharderEvents.SHARD_READY, shardID => {
 	manager.console.log([

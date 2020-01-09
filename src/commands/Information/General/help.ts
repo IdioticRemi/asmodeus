@@ -1,6 +1,7 @@
 import { Command, RichDisplay, util, CommandStore, KlasaMessage } from 'klasa';
 import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { AsmodeusClient } from '@shard/client';
+import { ExtendedHelpOutput } from '@utils/extendedHelp';
 
 const PERMISSIONS_EMBED = new Permissions([Permissions.FLAGS.EMBED_LINKS]);
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
@@ -42,13 +43,20 @@ module.exports = class extends Command {
 		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
 		if (command) {
 			const cmd = new MessageEmbed()
-				.setAuthor(`${message.language.get('COMMAND_HELP_CMD', command.name)}`, message.author.avatarURL() as string | undefined)
 				.setColor((this.client as AsmodeusClient).accent)
+				.setTitle(message.language.get('COMMAND_HELP_CMD', command.name))
 				.setDescription(util.isFunction(command.description) ? command.description(message.language) : command.description)
 				.addField(message.language.get('COMMAND_HELP_USAGE'), `\`\`\`${command.usage.fullUsage(message)}\`\`\``)
-				.addField(message.language.get('COMMAND_HELP_EXTENDED'), (util.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp).toString().substring(0, 1023))
 				.setFooter(message.language.get('COMMAND_HELP_REQUESTED', message.author.tag))
 				.setTimestamp();
+
+			const res: ExtendedHelpOutput = (util.isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp) as unknown as ExtendedHelpOutput;
+
+			if (typeof res === 'object') {
+				Object.entries(res).filter(e => e[1].length > 0).forEach(entry => {
+					cmd.addField(entry[1][0], entry[1][1]);
+				});
+			}
 
 			return message.sendMessage(cmd);
 		}

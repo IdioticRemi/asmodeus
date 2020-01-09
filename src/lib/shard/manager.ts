@@ -2,8 +2,7 @@ import { ShardingManager as KurasutaShardingManager, SharderOptions } from 'kura
 import { KlasaConsole, ConsoleOptions } from 'klasa';
 
 import { AsmodeusConfig } from '@lib/typings';
-import * as PROD_OPTS from '@root/config';
-import * as DEV_OPTS from '@root/config.dev';
+import { configEnv } from '@utils/configEnv';
 
 export class ShardingManager extends KurasutaShardingManager {
 
@@ -11,10 +10,8 @@ export class ShardingManager extends KurasutaShardingManager {
 	public options: CustomSharderOptions;
 	public console: KlasaConsole;
 
-	public constructor(path: string, production: boolean) {
-		let options;
-		if (production) options = PROD_OPTS as AsmodeusConfig;
-		else options = DEV_OPTS as AsmodeusConfig;
+	public constructor(path: string) {
+		const options = configEnv();
 
 		super(path, options.SHARDING_MANAGER_OPTIONS);
 
