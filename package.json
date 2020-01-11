@@ -13,6 +13,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@types/mongodb": "^3.3.14",
     "@types/node": "^13.1.4",
     "@types/ws": "^6.0.4",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
@@ -27,6 +28,7 @@
     "klasa": "dirigeants/klasa#settings",
     "kurasuta": "^1.1.6",
     "module-alias": "^2.2.2",
+    "mongodb": "^3.4.1",
     "simple-youtube-api": "^5.2.1"
   },
   "_moduleAliases": {
