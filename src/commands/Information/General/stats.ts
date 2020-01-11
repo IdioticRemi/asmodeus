@@ -4,8 +4,8 @@ import { loadavg, uptime } from 'os';
 
 export default class extends Command {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
+	public constructor(store: CommandStore, file: string[], dir: string) {
+		super(store, file, dir, {
 			aliases: ['sts'],
 			bucket: 2,
 			cooldown: 15,

@@ -1,5 +1,5 @@
 import { LanguageStore, Language, util, version } from 'klasa';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, Util, Role } from 'discord.js';
 import { AsmodeusClient } from '@shard/client';
 import friendlyDuration from '@utils/friendlyDuration';
 import { Style } from '@enum/style';
@@ -247,7 +247,19 @@ module.exports = class extends Language {
 			COMMAND_HELP_USAGE: '\\❓ Usage',
 			COMMAND_HELP_INFO: 'Information Page',
 			COMMAND_HELP_INFOS: 'This is Kuromu\'s information page!\n\nNavigate using the reactions at the bottom!\n*Make sure I have the right permissions*',
-			COMMAND_HELP_DESCRIPTION: 'Display help for a command.'
+			COMMAND_HELP_DESCRIPTION: 'Display help for a command.',
+
+			COMMAND_MODROLE_SHOW_NULL: 'No moderator role has been configured yet!',
+			COMMAND_MODROLE_SHOW: (role: Role) => `Moderator role is set to **${Util.escapeMarkdown(role.name)}**.`,
+			COMMAND_MODROLE_SET: (role: Role) => `Moderator role has been changed to **${Util.escapeMarkdown(role.name)}**!`,
+			COMMAND_MODROLE_RESET: 'Moderator role has been reset to its default value!',
+			COMMAND_MODROLE_DESCRIPTION: 'Change the moderator role for command permissions.',
+
+			COMMAND_ADMINROLE_SHOW_NULL: 'No administrator role has been configured yet!',
+			COMMAND_ADMINROLE_SHOW: (role: Role) => `Administrator role is set to **${Util.escapeMarkdown(role.name)}**.`,
+			COMMAND_ADMINROLE_SET: (role: Role) => `Administrator role has been changed to **${Util.escapeMarkdown(role.name)}**!`,
+			COMMAND_ADMINROLE_RESET: 'Administrator role has been reset to its default value!',
+			COMMAND_ADMINROLE_DESCRIPTION: 'Change the administrator role for command permissions.'
 		};
 	}
 
