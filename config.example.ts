@@ -36,3 +36,10 @@ export const SHARDING_MANAGER_OPTIONS: CustomSharderOptions = {
 	clusterCount: 2,
 	shardCount: 4
 };
+
+export const OTHER = {
+	SUPPORT: {
+		GUILD: 'Support guild ID/Snowflake',
+		ROLES: ['Array of Role snowfalkes/ids for permLevel 8 (support member)']
+	}
+};
